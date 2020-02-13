@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'controller.dart';
 
 void main() => runApp(RobotControllerApp());
 
@@ -30,7 +31,17 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title),),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.gamepad),
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: ((BuildContext context) => ControllerPage('Here will be robot name'))));
+            },
+          ),
+        ],
+      ),
     );
   }
 }
