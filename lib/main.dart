@@ -6,7 +6,7 @@ class RobotControllerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'RobotController',
+      title: 'Robot Controller',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
