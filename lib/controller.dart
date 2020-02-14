@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class ControllerPage extends StatefulWidget
 {
@@ -23,6 +24,7 @@ class _ControllerPageState extends State<ControllerPage>
             child: Row(
               children: <Widget>[
                 IconButton(icon: Icon(Icons.chevron_left), onPressed: null,),
+                IconButton(icon: Icon(MaterialCommunityIcons.hazard_lights), onPressed:null,),
                 IconButton(icon: Icon(Icons.chevron_right), onPressed: null,),
               ],
             ),
