@@ -18,18 +18,39 @@ class _ControllerPageState extends State<ControllerPage>
       appBar: AppBar(
         title: Text(widget.name),
       ),
-      body: Row(
-        children: <Widget>[
-          Container(
-            child: Row(
-              children: <Widget>[
-                IconButton(icon: Icon(Icons.chevron_left), onPressed: null,),
-                IconButton(icon: Icon(MaterialCommunityIcons.hazard_lights), onPressed:null,),
-                IconButton(icon: Icon(Icons.chevron_right), onPressed: null,),
-              ],
+      body: OrientationBuilder(
+        builder:(BuildContext context, Orientation orientation) => Flex(
+          direction: orientation == Orientation.landscape ? Axis.horizontal : Axis.vertical,
+          children: <Widget>[
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: IconButton(
+                      icon: Icon(Icons.chevron_left),
+                      onPressed: null,
+                      ),
+                  ),
+                  Expanded(
+                    child: IconButton(
+                      icon: Icon(MaterialCommunityIcons.hazard_lights),
+                      onPressed:null,
+                    ),
+                  ),
+                  Expanded(
+                    child: IconButton(
+                      icon: Icon(Icons.chevron_right),
+                      onPressed: null,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
-        ],
+            Expanded(
+              child: Placeholder(),
+            ),
+          ],
+        ),
       ),
     );
   }
