@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:control_pad/control_pad.dart';
 
 class ControllerPage extends StatefulWidget
 {
@@ -47,7 +48,7 @@ class _ControllerPageState extends State<ControllerPage>
               ),
             ),
             Expanded(
-              child: Placeholder(),
+              child: JoystickView(),
             ),
           ],
         ),
