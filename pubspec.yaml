@@ -26,6 +26,9 @@ dependencies:
 
   # The following adds classes to menage Bluetooth
   flutter_bluetooth_serial: ^0.2.2
+  
+  #Icons
+  flutter_icons: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
