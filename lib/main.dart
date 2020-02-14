@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'controller.dart';
 
 void main() => runApp(RobotControllerApp());
@@ -26,7 +27,26 @@ class RobotControllerHomePage extends StatefulWidget {
 }
 
 class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
-
+  bool isBluetoothEnabled;
+  @override
+  void initState()
+  {
+    super.initState();
+    checkBluetooth();
+    FlutterBluetoothSerial.instance.onStateChanged().listen(
+      (state){
+        setState(() {
+          isBluetoothEnabled = state.isEnabled;
+        });
+      }
+    );
+  } 
+  void checkBluetooth() async
+  {
+    isBluetoothEnabled = await FlutterBluetoothSerial.instance.isEnabled;
+    setState(() {
+    });
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -34,6 +54,15 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
+          Switch(
+            value: isBluetoothEnabled,
+            onChanged: (value){
+              if(value)
+                FlutterBluetoothSerial.instance.requestEnable();
+              else
+                FlutterBluetoothSerial.instance.requestDisable();
+            },
+          ),
           IconButton(
             icon: Icon(Icons.gamepad),
             onPressed: (){
