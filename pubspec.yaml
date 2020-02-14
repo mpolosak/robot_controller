@@ -29,6 +29,8 @@ dependencies:
   
   #Icons
   flutter_icons: ^1.0.0
+
+  control_pad: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
