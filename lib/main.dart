@@ -57,6 +57,9 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
 
   void turnDiscovering()
   {
+    setState((){
+      results.clear();
+    });
     if(isBluetoothEnabled){
       setState(() {
         isDiscovering = true;
