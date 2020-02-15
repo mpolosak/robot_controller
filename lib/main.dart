@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'controller.dart';
@@ -27,7 +29,10 @@ class RobotControllerHomePage extends StatefulWidget {
 }
 
 class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
+  StreamSubscription<BluetoothDiscoveryResult> _streamSubscription;
   bool isBluetoothEnabled;
+  var results = List<BluetoothDiscoveryResult>();
+  bool isDiscovering;
   @override
   void initState()
   {
@@ -38,6 +43,7 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
         setState(() {
           isBluetoothEnabled = state.isEnabled;
         });
+        turnDiscovering();
       }
     );
   } 
@@ -46,6 +52,26 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
     isBluetoothEnabled = await FlutterBluetoothSerial.instance.isEnabled;
     setState(() {
     });
+    turnDiscovering();
+  }
+
+  void turnDiscovering()
+  {
+    if(isBluetoothEnabled){
+      setState(() {
+        isDiscovering = true;
+      });
+      _streamSubscription = FlutterBluetoothSerial.instance.startDiscovery().listen((r){
+        setState((){
+          results.add(r);
+        });
+      });
+      _streamSubscription.onDone((){
+        setState(() {
+          isDiscovering = false;
+        });
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -70,6 +96,30 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
             },
           ),
         ],
+      ),
+      body: ListView.separated(
+        itemBuilder: (context, index)=>ListTile(
+          title: Text(results[index].device.name),
+          subtitle: Text(results[index].device.type.stringValue),
+        ),
+        separatorBuilder: (context, index) => const Divider(),
+        itemCount: results.length,
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(5),
+          height: 50,
+          child: isDiscovering
+          ? AspectRatio(
+            aspectRatio: 1,
+            child:CircularProgressIndicator()
+          )
+          : IconButton(
+            icon: Icon(Icons.bluetooth_searching), 
+            onPressed: turnDiscovering,
+          ),
+        ),
       ),
     );
   }
