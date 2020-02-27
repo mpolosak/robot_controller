@@ -104,6 +104,9 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
         itemBuilder: (context, index)=>ListTile(
           title: Text(results[index].device.name),
           subtitle: Text(results[index].device.type.stringValue),
+          onTap: results[index].device.isBonded
+          ?  ()=>null
+          : ()=>FlutterBluetoothSerial.instance.bondDeviceAtAddress(results[index].device.address)
         ),
         separatorBuilder: (context, index) => const Divider(),
         itemCount: results.length,
