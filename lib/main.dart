@@ -108,7 +108,22 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
             subtitle: Text(result.device.type.stringValue),
             onTap: result.device.isBonded
             ?  ()=>null
-            : ()=>FlutterBluetoothSerial.instance.bondDeviceAtAddress(result.device.address)
+            : () async {
+              var bonded = await FlutterBluetoothSerial.instance.bondDeviceAtAddress(result.device.address);
+              if(bonded){
+                setState(() {
+                  results[index] = BluetoothDiscoveryResult(
+                    device: BluetoothDevice(
+                      name: result.device.name,
+                      address: result.device.address,
+                      type: result.device.type,
+                      bondState: BluetoothBondState.bonded,
+                    ), 
+                    rssi: result.rssi
+                  );
+                });
+              }
+            }
           );
         },
         separatorBuilder: (context, index) => const Divider(),
