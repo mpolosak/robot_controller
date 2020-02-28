@@ -107,6 +107,9 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
           return ListTile(
             title: Text(result.device.name),
             subtitle: Text(result.device.type.stringValue),
+            trailing: result.device.isBonded
+            ? Icon(Icons.link)
+            : null,
             onTap: result.device.isBonded
             ?  ()=>null
             : () async {
