@@ -30,9 +30,9 @@ class RobotControllerHomePage extends StatefulWidget {
 
 class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
   StreamSubscription<BluetoothDiscoveryResult> _streamSubscription;
-  bool isBluetoothEnabled;
+  bool isBluetoothEnabled = false;
   var results = List<BluetoothDiscoveryResult>();
-  bool isDiscovering;
+  bool isDiscovering = false;
   @override
   void initState()
   {
