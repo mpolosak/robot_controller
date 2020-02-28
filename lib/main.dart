@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'controller.dart';
 
@@ -109,19 +110,25 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
             onTap: result.device.isBonded
             ?  ()=>null
             : () async {
-              var bonded = await FlutterBluetoothSerial.instance.bondDeviceAtAddress(result.device.address);
-              if(bonded){
-                setState(() {
-                  results[index] = BluetoothDiscoveryResult(
-                    device: BluetoothDevice(
-                      name: result.device.name,
-                      address: result.device.address,
-                      type: result.device.type,
-                      bondState: BluetoothBondState.bonded,
-                    ), 
-                    rssi: result.rssi
-                  );
-                });
+              try{
+                var bonded = await FlutterBluetoothSerial.instance.bondDeviceAtAddress(result.device.address);
+                if(bonded){
+                  setState(() {
+                    results[index] = BluetoothDiscoveryResult(
+                      device: BluetoothDevice(
+                        name: result.device.name,
+                        address: result.device.address,
+                        type: result.device.type,
+                        bondState: BluetoothBondState.bonded,
+                      ), 
+                      rssi: result.rssi
+                    );
+                  });
+                }
+              } catch(er){
+                  if(er is PlatformException){
+                    print(er.code+' '+er.message);
+                  }
               }
             }
           );
