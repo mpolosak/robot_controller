@@ -66,9 +66,13 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
         isDiscovering = true;
       });
       _streamSubscription = FlutterBluetoothSerial.instance.startDiscovery().listen((r){
-        setState((){
-          results.add(r);
-        });
+        if(!results.any(
+          (item) => r.device == item.device
+        )){
+          setState((){
+            results.add(r);
+          });
+        }
       });
       _streamSubscription.onDone((){
         setState(() {
