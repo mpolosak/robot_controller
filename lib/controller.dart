@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:control_pad/control_pad.dart';
 
 class ControllerPage extends StatefulWidget
 {
-  ControllerPage(this.name);
-  final String name;
+  ControllerPage(this.device);
+  final BluetoothDevice device;
   @override
   _ControllerPageState createState() => _ControllerPageState();
 }
@@ -17,7 +18,7 @@ class _ControllerPageState extends State<ControllerPage>
   {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.name),
+        title: Text(widget.device.name),
       ),
       body: OrientationBuilder(
         builder:(BuildContext context, Orientation orientation) => Flex(
