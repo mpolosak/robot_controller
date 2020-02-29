@@ -109,7 +109,11 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
             ? Icon(Icons.link)
             : null,
             onTap: result.device.isBonded
-            ?  ()=>null
+            ?  ()=>Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context)=>ControllerPage(result.device),
+                )
+              )
             : () async {
               try{
                 var bonded = await FlutterBluetoothSerial.instance.bondDeviceAtAddress(result.device.address);
