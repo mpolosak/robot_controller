@@ -97,12 +97,6 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
                 FlutterBluetoothSerial.instance.requestDisable();
             },
           ),
-          IconButton(
-            icon: Icon(Icons.gamepad),
-            onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: ((BuildContext context) => ControllerPage('Here will be robot name'))));
-            },
-          ),
         ],
       ),
       body: ListView.separated(
