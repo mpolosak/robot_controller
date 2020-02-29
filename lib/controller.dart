@@ -16,11 +16,15 @@ class ControllerPage extends StatefulWidget
 class _ControllerPageState extends State<ControllerPage>
 {
   BluetoothConnection _connection;
+  bool _isConnecting = true;
   @override
   void initState() {
     super.initState();
     BluetoothConnection.toAddress(widget.device.address).then((connection){
       _connection = connection;
+      setState(() {
+        _isConnecting = false;
+      });
     });
   }
   @override
@@ -38,40 +42,48 @@ class _ControllerPageState extends State<ControllerPage>
       appBar: AppBar(
         title: Text(widget.device.name),
       ),
-      body: OrientationBuilder(
-        builder:(BuildContext context, Orientation orientation) => Flex(
-          direction: orientation == Orientation.landscape ? Axis.horizontal : Axis.vertical,
-          children: <Widget>[
-            Expanded(
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: IconButton(
-                      icon: Icon(Icons.chevron_left),
-                      onPressed: null,
+      body: _isConnecting
+      ? Center(
+          child:SizedBox(
+            width: 100,
+            height: 100,
+            child: CircularProgressIndicator()
+          )
+        )
+      : OrientationBuilder(
+          builder:(BuildContext context, Orientation orientation) => Flex(
+            direction: orientation == Orientation.landscape ? Axis.horizontal : Axis.vertical,
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: IconButton(
+                        icon: Icon(Icons.chevron_left),
+                        onPressed: null,
+                        ),
+                    ),
+                    Expanded(
+                      child: IconButton(
+                        icon: Icon(MaterialCommunityIcons.hazard_lights),
+                        onPressed:null,
                       ),
-                  ),
-                  Expanded(
-                    child: IconButton(
-                      icon: Icon(MaterialCommunityIcons.hazard_lights),
-                      onPressed:null,
                     ),
-                  ),
-                  Expanded(
-                    child: IconButton(
-                      icon: Icon(Icons.chevron_right),
-                      onPressed: null,
+                    Expanded(
+                      child: IconButton(
+                        icon: Icon(Icons.chevron_right),
+                        onPressed: null,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: JoystickView(),
-            ),
-          ],
+              Expanded(
+                child: JoystickView(),
+              ),
+            ],
+          ),
         ),
-      ),
     );
   }
   void _sendData(Uint8List bytes)
@@ -80,7 +92,6 @@ class _ControllerPageState extends State<ControllerPage>
       _connection.output.add(bytes);
     }
     catch(er) {
-
     }
   }
 }
