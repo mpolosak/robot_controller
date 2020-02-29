@@ -24,6 +24,14 @@ class _ControllerPageState extends State<ControllerPage>
     });
   }
   @override
+  void dispose(){
+    if(_connection != null)
+    {
+      _connection.dispose();
+    }
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context)
   {
     return Scaffold(
