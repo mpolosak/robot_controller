@@ -13,6 +13,14 @@ class ControllerPage extends StatefulWidget
 
 class _ControllerPageState extends State<ControllerPage>
 {
+  BluetoothConnection _connection;
+  @override
+  void initState() {
+    super.initState();
+    BluetoothConnection.toAddress(widget.device.address).then((connection){
+      _connection = connection;
+    });
+  }
   @override
   Widget build(BuildContext context)
   {
