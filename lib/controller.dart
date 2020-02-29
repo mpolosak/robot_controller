@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -63,5 +65,14 @@ class _ControllerPageState extends State<ControllerPage>
         ),
       ),
     );
+  }
+  void _sendData(Uint8List bytes)
+  {
+    try{
+      _connection.output.add(bytes);
+    }
+    catch(er) {
+
+    }
   }
 }
