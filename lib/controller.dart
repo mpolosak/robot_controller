@@ -72,19 +72,19 @@ class _ControllerPageState extends State<ControllerPage>
                         Expanded(
                           child: IconButton(
                             icon: Icon(Icons.chevron_left),
-                            onPressed: null,
+                            onPressed: ()=>_sendData(ascii.encode('l')),
                             ),
                         ),
                         Expanded(
                           child: IconButton(
                             icon: Icon(MaterialCommunityIcons.hazard_lights),
-                            onPressed:null,
+                            onPressed: ()=>_sendData(ascii.encode('e')),
                           ),
                         ),
                         Expanded(
                           child: IconButton(
                             icon: Icon(Icons.chevron_right),
-                            onPressed: null,
+                            onPressed: ()=>_sendData(ascii.encode('r')),
                           ),
                         ),
                       ],
