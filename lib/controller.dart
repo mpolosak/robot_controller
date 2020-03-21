@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class _ControllerPageState extends State<ControllerPage>
 {
   BluetoothConnection _connection;
   bool _isConnecting = true;
+  var distance = "";
   @override
   void initState() {
     super.initState();
@@ -25,6 +27,7 @@ class _ControllerPageState extends State<ControllerPage>
       setState(() {
         _isConnecting = false;
       });
+      _connection.input.listen(_onData);
     });
   }
   @override
@@ -55,28 +58,39 @@ class _ControllerPageState extends State<ControllerPage>
             direction: orientation == Orientation.landscape ? Axis.horizontal : Axis.vertical,
             children: <Widget>[
               Expanded(
-                child: Row(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Expanded(
-                      child: IconButton(
-                        icon: Icon(Icons.chevron_left),
-                        onPressed: null,
+                    Text(
+                      distance,
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: IconButton(
+                            icon: Icon(Icons.chevron_left),
+                            onPressed: null,
+                            ),
                         ),
-                    ),
-                    Expanded(
-                      child: IconButton(
-                        icon: Icon(MaterialCommunityIcons.hazard_lights),
-                        onPressed:null,
-                      ),
-                    ),
-                    Expanded(
-                      child: IconButton(
-                        icon: Icon(Icons.chevron_right),
-                        onPressed: null,
-                      ),
+                        Expanded(
+                          child: IconButton(
+                            icon: Icon(MaterialCommunityIcons.hazard_lights),
+                            onPressed:null,
+                          ),
+                        ),
+                        Expanded(
+                          child: IconButton(
+                            icon: Icon(Icons.chevron_right),
+                            onPressed: null,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
-                ),
+                )
               ),
               Expanded(
                 child: JoystickView(),
@@ -93,5 +107,10 @@ class _ControllerPageState extends State<ControllerPage>
     }
     catch(er) {
     }
+  }
+  void _onData(Uint8List data){
+    setState((){
+      distance = ascii.decode(data);
+    });
   }
 }
