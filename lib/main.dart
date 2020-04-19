@@ -50,7 +50,38 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
   } 
   void checkBluetooth() async
   {
-    isBluetoothEnabled = await FlutterBluetoothSerial.instance.isEnabled;
+    try{
+      isBluetoothEnabled = await FlutterBluetoothSerial.instance.isEnabled;
+    }
+    catch(er)
+    {
+      if(er is PlatformException){
+        switch (er.code) {
+          case 'bluetooth_unavailable':
+            return showDialog<void>(
+              context: context,
+              barrierDismissible: false, // user must tap button!
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Bluetooth unavailable'),
+                  content: Text("Your device don't support bluetooth"),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Close app'),
+                      onPressed: () {
+                        SystemNavigator.pop();
+                      },
+                    ),
+                  ],
+                );
+              }
+            );
+            break;
+          default:
+            print(er.code+' '+er.message);
+        }
+      }
+    }
     setState(() {
     });
     turnDiscovering();
