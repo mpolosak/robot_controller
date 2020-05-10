@@ -18,7 +18,8 @@ class _ControllerPageState extends State<ControllerPage>
 {
   BluetoothConnection _connection;
   bool _isConnecting = true;
-  var distance = "";
+  var _buffor = List<int>();
+  int distance;
   @override
   void initState() {
     super.initState();
@@ -62,7 +63,7 @@ class _ControllerPageState extends State<ControllerPage>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      distance,
+                      distance.toString()+' cm',
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -109,8 +110,16 @@ class _ControllerPageState extends State<ControllerPage>
     }
   }
   void _onData(Uint8List data){
-    setState((){
-      distance = ascii.decode(data);
-    });
+    _buffor.addAll(data);
+    while(_buffor.length>2)
+    {
+      switch(_buffor.removeAt(0)){
+        case 100://d
+          setState(() {
+            distance=_buffor.removeAt(0);
+          });
+        break;
+      }
+    }
   }
 }
