@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:robot_contoller/error_dialog.dart';
 import 'controller.dart';
 
 void main() => runApp(RobotControllerApp());
@@ -58,27 +59,10 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
       if(er is PlatformException){
         switch (er.code) {
           case 'bluetooth_unavailable':
-            return showDialog<void>(
-              context: context,
-              barrierDismissible: false, // user must tap button!
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Bluetooth unavailable'),
-                  content: Text("Your device don't support bluetooth"),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Close app'),
-                      onPressed: () {
-                        SystemNavigator.pop();
-                      },
-                    ),
-                  ],
-                );
-              }
-            );
+            return showErrorDialog(context, 'Bluetooth unavailable', 'Your device does not support Bluetooth', fatal: true);
             break;
           default:
-            print(er.code+' '+er.message);
+            return showErrorDialog(context, er.code, er.message);
         }
       }
     }
@@ -163,7 +147,7 @@ class _RobotControllerHomePageState extends State<RobotControllerHomePage> {
                 }
               } catch(er){
                   if(er is PlatformException){
-                    print(er.code+' '+er.message);
+                    showErrorDialog(context, er.code, er.message);
                   }
               }
             }

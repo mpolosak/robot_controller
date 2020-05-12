@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:control_pad/control_pad.dart';
+import 'package:robot_contoller/error_dialog.dart';
 
 class ControllerPage extends StatefulWidget
 {
@@ -108,7 +109,7 @@ class _ControllerPageState extends State<ControllerPage>
     {
       if(er is PlatformException)
       {
-        print('ERROR:'+er.code+' '+er.message);
+        await showErrorDialog(context, 'Failed to connect to device', 'Device unavailble');
         Navigator.of(context).pop();
       }
     }
@@ -119,6 +120,10 @@ class _ControllerPageState extends State<ControllerPage>
       _connection.output.add(bytes);
     }
     catch(er) {
+      if(er is PlatformException)
+      {
+        showErrorDialog(context, er.code, er.message);
+      }
     }
   }
   void _onData(Uint8List data){

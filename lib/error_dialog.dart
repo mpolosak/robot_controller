@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void showErrorDialog(BuildContext context, String title, String errorMessage, {bool fatal=false})
+Future showErrorDialog(BuildContext context, String title, String errorMessage, {bool fatal=false})
 {
-  showDialog<void>(
+  return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
