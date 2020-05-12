@@ -103,7 +103,10 @@ class _ControllerPageState extends State<ControllerPage>
       _connection = await BluetoothConnection.toAddress(widget.device.address);setState(() {
         _isConnecting = false;
       });
-      _connection.input.listen(_onData);
+      _connection.input.listen(_onData, onDone: () async {
+        await showErrorDialog(context, 'Disconnected', 'Connection ended by host');
+        Navigator.of(context).pop();
+      });
     }
     catch(er)
     {
