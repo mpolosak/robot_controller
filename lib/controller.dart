@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:control_pad/control_pad.dart';
@@ -23,13 +24,7 @@ class _ControllerPageState extends State<ControllerPage>
   @override
   void initState() {
     super.initState();
-    BluetoothConnection.toAddress(widget.device.address).then((connection){
-      _connection = connection;
-      setState(() {
-        _isConnecting = false;
-      });
-      _connection.input.listen(_onData);
-    });
+    _connect();
   }
   @override
   void dispose(){
@@ -100,6 +95,23 @@ class _ControllerPageState extends State<ControllerPage>
           ),
         ),
     );
+  }
+  void _connect() async
+  {
+    try{
+      _connection = await BluetoothConnection.toAddress(widget.device.address);setState(() {
+        _isConnecting = false;
+      });
+      _connection.input.listen(_onData);
+    }
+    catch(er)
+    {
+      if(er is PlatformException)
+      {
+        print('ERROR:'+er.code+' '+er.message);
+        Navigator.of(context).pop();
+      }
+    }
   }
   void _sendData(Uint8List bytes)
   {
