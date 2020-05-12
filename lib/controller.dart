@@ -8,6 +8,13 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:control_pad/control_pad.dart';
 import 'package:robot_contoller/error_dialog.dart';
 
+enum Indicators{
+  none,
+  left,
+  right,
+  emergency
+}
+
 class ControllerPage extends StatefulWidget
 {
   ControllerPage(this.device);
@@ -22,6 +29,7 @@ class _ControllerPageState extends State<ControllerPage>
   bool _isConnecting = true;
   var _buffor = List<int>();
   int distance;
+  var indicators = Indicators.none;
   @override
   void initState() {
     super.initState();
