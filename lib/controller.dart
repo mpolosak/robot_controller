@@ -77,19 +77,19 @@ class _ControllerPageState extends State<ControllerPage>
                         Expanded(
                           child: IconButton(
                             icon: Icon(Icons.chevron_left),
-                            onPressed: ()=>_sendData(ascii.encode('l')),
+                            onPressed: ()=>_switchIndicators(Indicators.left),
                             ),
                         ),
                         Expanded(
                           child: IconButton(
                             icon: Icon(MaterialCommunityIcons.hazard_lights),
-                            onPressed: ()=>_sendData(ascii.encode('e')),
+                            onPressed: ()=>_switchIndicators(Indicators.emergency),
                           ),
                         ),
                         Expanded(
                           child: IconButton(
                             icon: Icon(Icons.chevron_right),
-                            onPressed: ()=>_sendData(ascii.encode('r')),
+                            onPressed: ()=>_switchIndicators(Indicators.right),
                           ),
                         ),
                       ],
@@ -148,6 +148,28 @@ class _ControllerPageState extends State<ControllerPage>
           });
         break;
       }
+    }
+  }
+  void _switchIndicators(Indicators which)
+  {
+    if(which==indicators)
+      indicators=Indicators.none;
+    else
+      indicators=which;
+    switch(indicators)
+    {
+      case Indicators.none:
+        _sendData(ascii.encode('n'));
+        break;
+      case Indicators.left:
+        _sendData(ascii.encode('l'));
+        break;
+      case Indicators.right:
+        _sendData(ascii.encode('r'));
+        break;
+      case Indicators.emergency:
+        _sendData(ascii.encode('e'));
+        break;
     }
   }
 }
